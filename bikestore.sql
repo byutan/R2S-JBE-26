@@ -138,59 +138,59 @@ insert into categories(category_name) values('Electric Bikes');
 insert into categories(category_name) values('Mountain Bikes');
 insert into categories(category_name) values('Road Bikes');
 
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek 820 - 2016',9,6,2016,379.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Ritchey Timberwolf Frameset - 2016',5,6,2016,749.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Surly Wednesday Frameset - 2016',8,6,2016,999.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Fuel EX 8 29 - 2016',9,6,2016,2899.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Heller Shagamaw Frame - 2016',3,6,2016,1320.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Surly Ice Cream Truck Frameset - 2016',8,6,2016,469.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Slash 8 27.5 - 2016',9,6,2016,3999.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Remedy 29 Carbon Frameset - 2016',9,6,2016,1799.99);
-insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Conduit+ - 2016',9,5,2016,2999.99);
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek 820 - 2016',9,6,2016,379.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Ritchey Timberwolf Frameset - 2016',5,6,2016,749.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Surly Wednesday Frameset - 2016',8,6,2016,999.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Fuel EX 8 29 - 2016',9,6,2016,2899.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Heller Shagamaw Frame - 2016',3,6,2016,1320.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Surly Ice Cream Truck Frameset - 2016',8,6,2016,469.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Slash 8 27.5 - 2016',9,6,2016,3999.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Remedy 29 Carbon Frameset - 2016',9,6,2016,1799.99)
+insert into products(product_name, brand_id, category_id, model_year, list_price) values('Trek Conduit+ - 2016',9,5,2016,2999.99)
 insert into products(product_name, brand_id, category_id, model_year, list_price) values('Surly Straggler - 2016',8,4,2016,1549.00);
 
-insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Debra','Burks',null,'debra.burks@yahoo.com','9273 Thorne Ave.','Orchard Park','NY','14127');
-insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Kasha','Todd',null,'kasha.todd@yahoo.com','910 Vine Street','Campbell','CA','95008');
-insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Tameka','Fisher',null,'tameka.fisher@aol.com','769C Honey Creek St.','Redondo Beach','CA','90278');
-insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Daryl','Spence',null,'daryl.spence@aol.com','988 Pearl Lane','Uniondale','NY','11553');
+insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Debra','Burks',null,'debra.burks@yahoo.com','9273 Thorne Ave.','Orchard Park','NY','14127')
+insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Kasha','Todd',null,'kasha.todd@yahoo.com','910 Vine Street','Campbell','CA','95008')
+insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Tameka','Fisher',null,'tameka.fisher@aol.com','769C Honey Creek St.','Redondo Beach','CA','90278')
+insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Daryl','Spence',null,'daryl.spence@aol.com','988 Pearl Lane','Uniondale','NY','11553')
 insert into customers(first_name, last_name, phone, email, street, city, state, zip_code) values ('Charolette','Rice','(916) 381-6003','charolette.rice@msn.com','107 River Dr.','Sacramento','CA','95820');
 
-insert into stores(store_name, phone, email, street, city, state, zip_code) values ('Santa Cruz Bikes','(831) 476-4321','santacruz@bikes.shop','3700 Portola Drive','Santa Cruz','CA','95060');
-insert into stores(store_name, phone, email, street, city, state, zip_code) values ('Baldwin Bikes','(516) 379-8888','baldwin@bikes.shop','4200 Chestnut Lane','Baldwin','NY','11432');
+insert into stores(store_name, phone, email, street, city, state, zip_code) values ('Santa Cruz Bikes','(831) 476-4321','santacruz@bikes.shop','3700 Portola Drive','Santa Cruz','CA','95060')
+insert into stores(store_name, phone, email, street, city, state, zip_code) values ('Baldwin Bikes','(516) 379-8888','baldwin@bikes.shop','4200 Chestnut Lane','Baldwin','NY','11432')
 insert into stores(store_name, phone, email, street, city, state, zip_code) values ('Rowlett Bikes','(972) 530-5555','rowlett@bikes.shop','8000 Fairway Avenue','Rowlett','TX','75088');
 
-insert into stocks(store_id, product_id, quantity) values (1, 1, 27);
-insert into stocks(store_id, product_id, quantity) values (1, 2, 5);
-insert into stocks(store_id, product_id, quantity) values (1, 3, 6);
-insert into stocks(store_id, product_id, quantity) values (1, 4, 23);
-insert into stocks(store_id, product_id, quantity) values (1, 5, 22);
-insert into stocks(store_id, product_id, quantity) values (1, 6, 0);
-insert into stocks(store_id, product_id, quantity) values (1, 7, 8);
-insert into stocks(store_id, product_id, quantity) values (1, 8, 0);
-insert into stocks(store_id, product_id, quantity) values (1, 9, 11);
+insert into stocks(store_id, product_id, quantity) values (1, 1, 27)
+insert into stocks(store_id, product_id, quantity) values (1, 2, 5)
+insert into stocks(store_id, product_id, quantity) values (1, 3, 6)
+insert into stocks(store_id, product_id, quantity) values (1, 4, 23)
+insert into stocks(store_id, product_id, quantity) values (1, 5, 22)
+insert into stocks(store_id, product_id, quantity) values (1, 6, 0)
+insert into stocks(store_id, product_id, quantity) values (1, 7, 8)
+insert into stocks(store_id, product_id, quantity) values (1, 8, 0)
+insert into stocks(store_id, product_id, quantity) values (1, 9, 11)
 insert into stocks(store_id, product_id, quantity) values (1, 10, 15);
 
-insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Fabiola', 'Jackson', 'fabiola.jackson@bikes.shop', '(831) 555-5554', 1, 1, null);
-insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Mireya', 'Copeland', 'mireya.copeland@bikes.shop', '(831) 555-5555', 1, 1, 1);
-insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Genna', 'Serrano', 'genna.serrano@bikes.shop', '(831) 555-5556', 1, 1, 2);
-insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Virgie', 'Wiggins', 'virgie.wiggins@bikes.shop', '(831) 555-5557', 1, 1, 2);
+insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Fabiola', 'Jackson', 'fabiola.jackson@bikes.shop', '(831) 555-5554', 1, 1, null)
+insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Mireya', 'Copeland', 'mireya.copeland@bikes.shop', '(831) 555-5555', 1, 1, 1)
+insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Genna', 'Serrano', 'genna.serrano@bikes.shop', '(831) 555-5556', 1, 1, 2)
+insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Virgie', 'Wiggins', 'virgie.wiggins@bikes.shop', '(831) 555-5557', 1, 1, 2)
 insert into staffs(first_name, last_name, email, phone, active, store_id, manager_id) values ('Jannette', 'David', 'jannette.david@bikes.shop', '(516) 379-4444', 1, 2, 1);
 
-insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (1,4,'2016-01-01','2016-01-03','2016-01-03',1,2);
-insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (2,4,'2016-01-01','2016-01-04','2016-01-03',2,5);
-insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (3,4,'2016-01-02','2016-01-05','2016-01-03',2,5);
-insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (4,4,'2016-01-03','2016-01-04','2016-01-05',1,3);
+insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (1,4,'2016-01-01','2016-01-03','2016-01-03',1,2)
+insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (2,4,'2016-01-01','2016-01-04','2016-01-03',2,5)
+insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (3,4,'2016-01-02','2016-01-05','2016-01-03',2,5)
+insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (4,4,'2016-01-03','2016-01-04','2016-01-05',1,3)
 insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) values (5,4,'2016-01-03','2016-01-06','2016-01-06',2,4);
 
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,1,10,1,599.99,0.20);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,2,8,2,1799.99,0.07);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,3,10,2,1549.00,0.05);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,4,10,2,599.99,0.05);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,5,4,1,2899.99,0.20);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (2,1,10,1,599.99,0.07);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (2,2,10,2,599.99,0.05);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (3,1,3,1,999.99,0.05);
-insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (3,2,10,1,599.99,0.05);
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,1,10,1,599.99,0.20)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,2,8,2,1799.99,0.07)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,3,10,2,1549.00,0.05)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,4,10,2,599.99,0.05)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (1,5,4,1,2899.99,0.20)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (2,1,10,1,599.99,0.07)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (2,2,10,2,599.99,0.05)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (3,1,3,1,999.99,0.05)
+insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (3,2,10,1,599.99,0.05)
 insert into order_items(order_id, item_id, product_id, quantity, list_price, discount) values (4,1,2,2,749.99,0.10);
 
 select * from brands;
