@@ -31,28 +31,29 @@ values
 	('Trần Bình', 'Trọng', 'Quận 8', 'HCM', 70000, 'VN'),
 	('Tran Bao', 'An', 'Bình Thạnh', 'HCM', 70000, 'VN'),
 	('Tasty', 'Finn', 'Streetroad 19B', 'Liverpool', 'L1 0AA', 'UK');
+    
+select customer_id, customer_name, contact_name, address, city, postal_code, country
+from customers;
 
-insert into employees (last_name, first_name, birth_date, supervisor_id) values ('Trần Văn An','Nguyễn', '2005-12-28',null),
-('Bao An', 'Tran', '2006-12-28',1);
-insert into orders (customer_id, employee_id, order_date) values (2,1,'2026-06-03 10:25:30');
-update orders 
-set customer_id=2 
-where order_id=1;
+select distinct country
+from customers;
 
-select o.order_id, o.customer_id, c.customer_name
-from orders o inner join customers c on o.customer_id = c.customer_id;
+select customer_id, customer_name, contact_name, address, city, postal_code, country
+from customers
+where country = 'VN';
 
-select c.customer_id, c.customer_name, o.order_id
-from customers c left join orders o on c.customer_id = o.customer_id; 
+select country, count(*) number_of_customers
+from customers
+group by country;
 
-select e1.employee_id, concat(e1.first_name,' ',e1.last_name) employee_name, e1.supervisor_id, concat(e2.first_name,'',e2.last_name) supervisor_name
-from employees e1 inner join employees e2 on e1.supervisor_id = e2.employee_id;
+select country, count(customer_id) number_of_customers
+from customers
+group by country
+having number_of_customers > 1;
 
-select c1.customer_id, c1.customer_name, c2.country
-from customers c1 inner join customers c2 on c1.customer_id <> c2.customer_id and c1.country = c2.country;
-
-select o.order_id, c.customer_name, concat(e.first_name,'',e.last_name) employee_name, o.order_date
-from (orders o inner join customers c on o.customer_id = c.customer_id) inner join employees e on o.employee_id = e.employee_id; 
+select * 
+from customers
+order by customer_name;
 
 create database BikeStores;
 create table brands (
@@ -220,68 +221,66 @@ insert into order_items(order_id, item_id, product_id, quantity, list_price, dis
 ,(3,2,10,1,599.99,0.05)
 ,(4,1,2,2,749.99,0.10);
 
-select p.product_name, p.list_price, b.brand_name
-from products p inner join brands b on p.brand_id = b.brand_id 
-where p.list_price > 1000;
+select first_name, last_name, email 
+from customers;
 
-select c.customer_id, c.first_name, c.last_name, o.order_id, o.order_status
-from customers c inner join orders o on c.customer_id = o.customer_id and o.order_status = 4;
+select * 
+from customers
+where state = 'CA';
 
-select 
-e.first_name employee_first_name, 
-e.last_name employee_last_name, 
-e.email employee_email, 
-m.first_name manager_first_name, 
-m.last_name manager_last_name, 
-m.email manager_email
-from staffs e inner join staffs m where e.manager_id = m.staff_id;
+select * 
+from customers
+order by first_name;
 
-select p.product_name, b.brand_name
-from products p left join brands b on p.brand_id = b.brand_id;
+select city, count(customer_id) number_of_customers
+from customers
+where state = 'CA'
+group by city;
 
-select product_name, model_year, brand_name
-from products p inner join brands b on p.brand_id = b.brand_id
-where model_year >= 2016;
+select city
+from customers
+where state = 'CA'
+group by city
+having count(customer_id) > 10;
 
-select o.order_id, p.product_name, oi.quantity
-from orders o 
-inner join order_items oi on o.order_id = oi.order_id
-inner join products p on oi.product_id = p.product_id;
+select product_name, model_year
+from products
+where list_price between 1000 and 2000;
 
-select product_name, category_name
-from products p inner join categories c on p.category_id = c.category_id
-where c.category_name = 'Mountain Bikes';
+select first_name, email 
+from staffs
+where active = 1;
 
-select product_name, list_price, category_name, brand_name
-from products p 
-inner join brands b on p.brand_id = b.brand_id
-inner join categories c on p.category_id = c.category_id
-where p.list_price > 500 and c.category_name = 'Electric Bikes';
+select product_name, brand_id
+from products
+where model_year = '2016' and list_price > 1000;
 
-select c.customer_id, c.first_name, c.last_name, o.order_id, o.shipped_date
-from customers c left join orders o on c.customer_id = o.customer_id and o.shipped_date is null;
+select order_id, customer_id
+from orders
+where shipped_date is not null;
 
-select s.store_name, count(o.order_id) order_count
-from stores s left join orders o on s.store_id = o.store_id
-group by s.store_id;
+select product_id, list_price, quantity
+from order_items
+where discount > 0 and quantity = 2;
 
-select o.order_id, st.first_name, st.last_name, o.order_date
-from orders o inner join staffs st on o.staff_id = st.staff_id
-inner join stores s on o.store_id = s.store_id
-where s.store_id = 1;
+select store_id, count(quantity) number_of_product
+from stocks
+group by store_id
+having number_of_product > 5;
 
-select concat(c.first_name,' ',c.last_name) customer_name, o.order_id, o.order_date
-from customers c inner join orders o on c.customer_id = o.customer_id
-where o.order_date like '2016%';
+select concat(first_name, '', last_name) customer_name, email
+from customers
+where email like '%yahoo.com' 
+order by first_name;
 
-insert into customers(first_name, last_name, phone, email, street, city, state, zip_code)
-values ('Fabiola', 'Jackson',null,'fabiola.jackson@bikes.shop',null,null,null,null);
+select category_id, avg(list_price) average_list_price
+from products
+group by category_id
+having avg(list_price) > 500
+order by avg(list_price) desc;
 
-insert into orders(customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id) 
-values (6,4,'2025-07-01','2025-07-03','2025-07-03',1,2);
-
-select c.first_name, c.last_name, o.order_id, o.order_date
-from customers c inner join orders o on c.customer_id = o.customer_id
-inner join staffs s on c.first_name = s.first_name and c.last_name = s.last_name
-where o.order_date >= curdate() - interval 12 month; 
-
+select brand_id, count(product_id) total_number_of_products
+from products
+group by brand_id
+having total_number_of_products > 2
+order by total_number_of_products desc;
