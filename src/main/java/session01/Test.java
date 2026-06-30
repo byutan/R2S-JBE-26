@@ -1,4 +1,4 @@
-package session_01;
+package session01;
 
 public class Test {
     public static void main(String[] args) {
