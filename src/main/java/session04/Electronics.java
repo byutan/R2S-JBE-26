@@ -1,4 +1,4 @@
-package session_04;
+package session04;
 
 public class Electronics extends Product {
     private String brand;

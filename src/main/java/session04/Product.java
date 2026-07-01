@@ -1,4 +1,4 @@
-package session_04;
+package session04;
 
 public abstract class Product {
     protected int id;

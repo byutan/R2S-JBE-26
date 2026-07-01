@@ -1,4 +1,4 @@
-package session_02;
+package session02;
 
 public class Trainee {
     private String id;

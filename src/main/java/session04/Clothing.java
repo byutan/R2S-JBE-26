@@ -1,4 +1,4 @@
-package session_04;
+package session04;
 
 public class Clothing extends Product {
     private  String size;
