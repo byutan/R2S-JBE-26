@@ -1,5 +1,6 @@
 package session05;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Program {
@@ -15,26 +16,30 @@ public class Program {
             byte option = sc.nextByte();
             sc.nextLine();
 
-            switch (option) {
-                case 1:
-                    productManagement.addProduct();
-                    break;
-                case 2:
-                    Product foundProduct = productManagement.retrieveProduct();
-                    if(foundProduct == null){
+            try {
+                switch (option) {
+                    case 1:
+                        productManagement.addProduct();
+                        break;
+                    case 2:
+                        Product foundProduct = productManagement.retrieveProduct();
+                        if(foundProduct == null){
+                            break;
+                        } else {
+                            System.out.println(foundProduct.displayProductInfo());
+                        }
+                        break;
+                    case 3:
+                        productManagement.updateStock();
+                        break;
+                    case 4:
                         return;
-                    } else {
-                        System.out.println(foundProduct.displayProductInfo());
-                    }
-                    break;
-                case 3:
-                    productManagement.updateStock();
-                    break;
-                case 4:
-                    return;
-                case 5:
-                    System.out.println("Invalid option");
-                    break;
+                    case 5:
+                        System.out.println("Invalid option");
+                        break;
+                }
+            } catch (InputMismatchException | ProductNotFoundException | IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
 
         } while (true);
