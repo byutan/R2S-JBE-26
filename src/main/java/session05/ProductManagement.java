@@ -12,28 +12,41 @@ public class ProductManagement {
     }
 
     public void addProduct() {
+        if(count == MAX) {
+            throw new IllegalArgumentException("Maximum products reached");
+        }
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Enter product ID: ");
         int id = sc.nextInt();
         sc.nextLine();
+        if(id < 0) {
+            throw new IllegalArgumentException("Invalid product ID");
+        }
 
         System.out.println("Enter product Name: ");
         String name = sc.nextLine();
+        if(name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Invalid product Name");
+        }
 
         System.out.println("Enter product Price: ");
         double price = sc.nextDouble();
         sc.nextLine();
+        if(price < 0) {
+            throw new IllegalArgumentException("Invalid product Price");
+        }
 
         System.out.println("Enter product Quantity: ");
         int quantity = sc.nextInt();
         sc.nextLine();
+        if(quantity < 0) {
+            throw new IllegalArgumentException("Invalid product Quantity");
+        }
 
         Product newProduct = new Product(id, name, price, quantity);
 
-        if(count == MAX) {
-            throw new IllegalArgumentException("Maximum products exceeded");
-        }
         if (count > 0) {
             for(Product p : products) {
                 if(p.getProductID() == newProduct.getProductID()) {
@@ -51,12 +64,15 @@ public class ProductManagement {
         System.out.println("Enter product ID: ");
         int id = sc.nextInt();
         sc.nextLine();
+        if(id < 0){
+            throw new IllegalArgumentException("Invalid product ID");
+        }
 
         if(count > 0) {
-            for(Product p : products) {
-                if(p.getProductID() == id) {
+            for(int i = 0; i < count; i++) {
+                if(products[i].getProductID() == id) {
                     System.out.println("Product with ID" + id + " found");
-                    return p;
+                    return products[i];
                 }
             }
         }
@@ -69,15 +85,18 @@ public class ProductManagement {
         System.out.println("Enter product ID: ");
         int id = sc.nextInt();
         sc.nextLine();
+        if(id < 0){
+            throw new IllegalArgumentException("Invalid product ID");
+        }
 
         if(count > 0) {
-            for(Product p : products) {
-                if(p.getProductID() == id) {
+            for(int i = 0; i < count; i++) {
+                if(products[i].getProductID() == id) {
                     System.out.println("Enter product Quantity: ");
                     int quantity = sc.nextInt();
                     sc.nextLine();
 
-                    p.setQuantityInStock(quantity);
+                    products[i].setQuantityInStock(quantity);
                     System.out.println("Quantity updated successfully.");
                     return;
                 }

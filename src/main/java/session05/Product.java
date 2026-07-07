@@ -7,54 +7,55 @@ public class Product {
     private int quantityInStock;
 
     public Product(int productID, String name, double price, int quantityInStock) {
-        setProductID(productID);
-        setName(name);
-        setPrice(price);
-        setQuantityInStock(quantityInStock);
+        this.productID = productID;
+        this.name = name;
+        this.price = price;
+        this.quantityInStock = quantityInStock;
     }
 
     public int getProductID() {
         return productID;
     }
 
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getPrice() {
         return price;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     public int getQuantityInStock() {
         return quantityInStock;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
-
-    public void setName(String name) {
-        if(name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
-        }
-        this.name = name;
-    }
-
-    public void setPrice(double price) {
-        if(price < 0) {
-            throw new IllegalArgumentException(" Price and quantity must be nonnegative.");
-        }
-        this.price = price;
-    }
-
     public void setQuantityInStock(int quantityInStock) {
-        if(quantityInStock < 0) {
-            throw new IllegalArgumentException(" Price and quantity must be nonnegative.");
-        }
         this.quantityInStock = quantityInStock;
     }
 
     public String displayProductInfo() {
-        return String.format("ID: %-6d | Name: %-20s | Price: %-10f | Stock: %-6d", productID, name,  price, quantityInStock);
+        return toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productID=" + productID +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantityInStock=" + quantityInStock +
+                '}';
     }
 }
