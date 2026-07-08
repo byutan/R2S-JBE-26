@@ -1,141 +1,229 @@
 package session06.training.main;
 
 import session06.training.entities.Course;
-import session06.training.utils.Constants;
 import session06.training.utils.ScannerUtils;
+import session06.training.utils.ValidationException;
 import session06.training.utils.Validator;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class CourseManagement {
-    private final ArrayList<Course> courses;
+    private ArrayList<Course> courseList;
 
     public CourseManagement() {
-        courses = new ArrayList<>();
+        this.courseList = new ArrayList<>();
     }
 
-    private void input(Scanner scanner) {
-        System.out.print("Enter courses code: ");
-        String code = ScannerUtils.readNonEmptyString(scanner.nextLine());
+    public void input(Scanner scanner) throws ValidationException {
+        ScannerUtils scannerUtils = new ScannerUtils(scanner);
 
-        System.out.print("Enter courses name: ");
-        String name = ScannerUtils.readNonEmptyString(scanner.nextLine());
+        String courseName = null;
+        boolean isValidName = false;
+        do {
+            System.out.print("Enter Course Name: ");
+            try {
+                courseName = scannerUtils.readString();
+                isValidName = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage() + " Please try again.\n");
+            }
+        } while (!isValidName);
 
-        System.out.print("Enter courses status (true/false): ");
-        boolean status = ScannerUtils.readBoolean(scanner.nextLine());
+        String courseCode = null;
+        boolean isValidCode = false;
+        do {
+            System.out.print("Enter Course Code: ");
+            try {
+                courseCode = scannerUtils.readString();
+                if (Validator.validateCode(courseCode) && !Validator.isDuplicatedCode(courseCode, courseList)) {
+                    isValidCode = true;
+                } else {
+                    System.out.println("Invalid or duplicated course code. Please try again.\n");
+                }
+            } catch (IllegalArgumentException | ValidationException e) {
+                System.out.println(e.getMessage() + " Please try again.\n");
+            }
+        } while (!isValidCode);
 
-        System.out.print("Enter courses duration: ");
-        short duration = ScannerUtils.readNonNegativeShort(scanner.nextLine());
+        boolean courseStatus = false;
+        boolean isValidStatus = false;
+        do {
+            System.out.print("Enter Course Status (\"active\"/\"inactive\"): ");
+            try {
+                courseStatus = scannerUtils.readBoolean();
+                isValidStatus = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage() + " Please try again.\n");
+            }
+        } while (!isValidStatus);
 
-        System.out.print("Enter courses flag: ");
-        String flag = ScannerUtils.readNonEmptyString(scanner.nextLine());
+        short courseDuration = 0;
+        boolean isValidDuration = false;
+        do {
+            System.out.print("Enter Course duration: ");
+            try {
+                courseDuration = scannerUtils.readShort();
+                if (Validator.validateDuration(courseDuration)) {
+                    isValidDuration = true;
+                } else {
+                    System.out.println("Invalid duration value. Please try again.\n");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Duration must be a number. Please try again.\n");
+            } catch (IllegalArgumentException | ValidationException e) {
+                System.out.println(e.getMessage() + " Please try again.\n");
+            }
+        } while (!isValidDuration);
 
-        boolean isValidCourse = Validator.validateCode(code)
-                && Validator.validateStatus(status)
-                && Validator.validateDuration(duration)
-                && Validator.validateFlag(flag);
+        String courseFlag = null;
+        boolean isValidFlag = false;
+        do {
+            System.out.print("Enter Course flag (\"optional\"/\"prerequisite\"/\"N/A\"): ");
+            try {
+                courseFlag = scannerUtils.readString();
+                if (Validator.validateFlag(courseFlag)) {
+                    isValidFlag = true;
+                } else {
+                    System.out.println("Invalid course flag. Please try again.\n");
+                }
+            } catch (IllegalArgumentException | ValidationException e) {
+                System.out.println(e.getMessage() + " Please try again.\n");
+            }
+        } while (!isValidFlag);
 
-        if (isValidCourse){
-            Course newCourse = new Course(code, name, status, duration, flag);
-                if(!Validator.isDuplicatedCode(newCourse.getCode(), courses)) {
-                courses.add(newCourse);
-                System.out.println("Course added successfully");
-                return;
+        Course newCourse = new Course(courseCode, courseName, courseStatus, courseDuration, courseFlag);
+        courseList.add(newCourse);
+        System.out.println("\nNew Course added to the list successfully.");
+    }
+
+    public ArrayList<Course> search(String type, Object data) {
+        ArrayList<Course> searchedCourses = new ArrayList<>();
+        return switch (type) {
+            case "code" -> {
+                searchedCourses = courseList
+                        .stream()
+                        .filter(course -> course.getCode().equals(data))
+                        .collect(Collectors.toCollection(ArrayList::new));
+                yield searchedCourses;
+            }
+            case "name" -> {
+                searchedCourses = courseList
+                        .stream()
+                        .filter(course -> course.getName().equals(data))
+                        .collect(Collectors.toCollection(ArrayList::new));
+                yield searchedCourses;
+            }
+            case "flag" -> {
+                searchedCourses = courseList
+                        .stream()
+                        .filter(course -> course.getFlag().equals(data))
+                        .collect(Collectors.toCollection(ArrayList::new));
+                yield searchedCourses;
+            }
+            case "duration" -> {
+                searchedCourses = courseList
+                        .stream()
+                        .filter(course -> course.getDuration() == Short.parseShort((String) data))
+                        .collect(Collectors.toCollection(ArrayList::new));
+                yield searchedCourses;
+            }
+            case "status" -> {
+                searchedCourses = courseList
+                        .stream()
+                        .filter(course -> course.isStatus() == Boolean.parseBoolean((String) data))
+                        .collect(Collectors.toCollection(ArrayList::new));
+                yield searchedCourses;
+            }
+            default -> {
+                System.out.println("Invalid search type. Please try again.\n");
+                yield searchedCourses;
+            }
+        };
+    }
+
+    public void displayAll(String flag) {
+        switch (flag) {
+            case "optional" -> {
+                ArrayList<Course> searchedCourses = search("flag", "optional");
+                displaySearchedCourses(searchedCourses);
+            }
+            case "prerequisite" -> {
+                ArrayList<Course> searchedCourses = search("flag", "prerequisite");
+                extracted(searchedCourses);
+            }
+            case "N/A" -> {
+                ArrayList<Course> searchedCourses = search("flag", "N/A");
+                displaySearchedCourses(searchedCourses);
+            }
+            default -> {
+                System.out.println("Invalid flag. Please try again.\n");
             }
         }
-        System.out.println("Add courses failed");
     }
 
-    private ArrayList<Course> search(String type, Object data) throws IllegalArgumentException{
-        ArrayList<Course> results = new ArrayList<>();
-        if(type == null || data == null) {
-            throw new IllegalArgumentException("Type and data not found");
-        }
-        for(Course course : courses) {
-            switch (type.toLowerCase()) {
-                case Constants.TYPE_CODE:
-                    if(data instanceof String code) {
-                        if(code.equalsIgnoreCase(course.getCode())) {
-                            results.add(course);
-                        }
-                    }
-                    break;
-                case Constants.TYPE_NAME:
-                    if(data instanceof String name) {
-                        if(name.equalsIgnoreCase(course.getName())) {
-                            results.add(course);
-                        }
-                    }
-                    break;
-                case Constants.TYPE_STATUS:
-                    if(data instanceof Boolean status) {
-                        if(status.equals(course.getStatus())) {
-                            results.add(course);
-                        }
-                    }
-                    break;
+    private static void extracted(ArrayList<Course> searchedCourses) {
+        displaySearchedCourses(searchedCourses);
+    }
 
-                case Constants.TYPE_DURATION:
-                    if(data instanceof Short duration) {
-                        if(duration.equals(course.getDuration())) {
-                            results.add(course);
-                        }
-                    }
-                    break;
-                case Constants.TYPE_FLAG:
-                    if(data instanceof String flag) {
-                        if(flag.equalsIgnoreCase(course.getFlag())) {
-                            results.add(course);
-                        }
-                    }
-                    break;
-                default:
-                    break;
+    private static void displaySearchedCourses(ArrayList<Course> searchedCourses) {
+        if(searchedCourses.isEmpty()) {
+            System.out.println("No course found.");
+        } else {
+            for(Course course : searchedCourses) {
+                System.out.println(course.toString());
             }
-        }
-        if(results.isEmpty()) {
-            System.out.println("Course not found");
-        }
-        return results;
-    }
-    private void displayAll(String flag) {
-        ArrayList<Course> filterCourse = courses.stream()
-                .filter(course -> course.getFlag().equalsIgnoreCase(flag))
-                .collect(Collectors.toCollection(ArrayList::new));
-        for(Course course : filterCourse) {
-            System.out.println(course.toString());
         }
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         CourseManagement courseManagement = new CourseManagement();
+        Scanner scanner = new Scanner(System.in);
+
         do {
-            int option = ScannerUtils.readMenuOption();
+            try {
+                System.out.println("1. Add Course");
+                System.out.println("2. Search course by type attribute and its value(\"code\"/\"name\"/\"flag\"/\"status\"/\"duration\")");
+                System.out.println("3. Display attribute base on flag value (\"optional\"/\"prerequisite\"/\"N/A\")");
+                System.out.println("4. Quit");
+
+                byte option = scanner.nextByte();
+                scanner.nextLine();
                 switch (option) {
-                    case Constants.CREATE_COURSE:
+                    case 1:
                         courseManagement.input(scanner);
                         break;
-                    case Constants.SEARCH_COURSE:
+                    case 2:
                         System.out.print("Enter search type: ");
-                        String type = ScannerUtils.readNonEmptyString(scanner.nextLine());
-                        System.out.print("Enter search data: ");
-                        String data = ScannerUtils.readNonEmptyString(scanner.nextLine());
-                        ArrayList<Course> searched_course = courseManagement.search(type, data);
-                        for(Course course : searched_course) {
-                            System.out.println(course.toString());
-                        }
+                        String searchType = scanner.nextLine();
+
+                        System.out.print("Enter search value: ");
+                        String searchValue = scanner.nextLine();
+
+                        ArrayList<Course> searchedCourses= courseManagement.search(searchType, searchValue);
+                        displaySearchedCourses(searchedCourses);
                         break;
-                    case Constants.DISPLAY_COURSE:
-                        courseManagement.displayAll(ScannerUtils.readNonEmptyString(scanner.nextLine()));
+                    case 3:
+                        System.out.print("Enter flag value: ");
+                        String flagValue = scanner.nextLine();
+
+                        courseManagement.displayAll(flagValue);
                         break;
-                    case Constants.QUIT:
+                    case 4:
                         return;
                     default:
+                        System.out.println("Invalid input. Please try again.");
                         break;
                 }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number from the menu.\n");
+                scanner.nextLine();
+
+            } catch (ValidationException | IllegalArgumentException e) {
+                System.out.println(e.getMessage() + "\n");
+            }
         } while (true);
     }
 }
