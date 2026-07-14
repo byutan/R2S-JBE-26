@@ -10,12 +10,11 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int supervisor, String birthdate, String firstName, String lastName, int id) {
+    public Employee(int supervisor, String birthdate, String firstName, String lastName) {
         this.supervisor = supervisor;
         this.birthdate = birthdate;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = id;
     }
 
     public int getId() {
@@ -60,12 +59,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", birthdate='" + birthdate + '\'' +
-                ", supervisor=" + supervisor +
-                '}';
+        return String.format("Employee{id=%-3d, lastName='%-15s', firstName='%-15s', birthdate='%s', supervisor=%d}",
+                id, lastName, firstName, birthdate, supervisor);
     }
 }
