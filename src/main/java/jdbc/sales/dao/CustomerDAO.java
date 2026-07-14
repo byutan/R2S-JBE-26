@@ -75,8 +75,7 @@ public class CustomerDAO {
         int index = 1;
 
         try(PreparedStatement ps = conn.prepareStatement(deleteSt)) {
-            ps.setInt(index++, id)
-            ;
+            ps.setInt(index++, id);
             if(ps.executeUpdate() > 0) {
                 isDeleted = true;
             }
