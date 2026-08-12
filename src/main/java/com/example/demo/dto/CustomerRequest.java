@@ -1,8 +1,6 @@
 package com.example.demo.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,9 +14,10 @@ public class CustomerRequest {
     @NotBlank(message = "Last name is empty.")
     private String lastName;
     @NotNull(message = "Birthdate is empty.")
+    @PastOrPresent
     private Date birthDate;
     @NotBlank(message = "Email address is empty.")
-    @Pattern(message = "Invalid email address.", regexp = "^(.+)@(\\S+)$")
+    @Email(message = "Invalid email address.")
     private String emailAddress;
     @Pattern(message = "Invalid phone number.", regexp = "^[0-9]{10}$")
     private String phoneNumber;

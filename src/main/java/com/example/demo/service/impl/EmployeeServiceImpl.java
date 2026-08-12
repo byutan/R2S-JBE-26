@@ -20,22 +20,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest employeeRequest) {
-        validateEmployeeRequest(employeeRequest);
+        Employee supervisor = fetchSupervisor(employeeRequest.getSupervisorId());
         Employee newEmployee = employeeRepository.save(new Employee(
                 employeeRequest.getFirstName(),
                 employeeRequest.getLastName(),
                 employeeRequest.getBirthDate(),
-                employeeRequest.getSupervisorId()
+                supervisor
         ));
         return getEmployeeResponse(newEmployee);
     }
 
     @Override
     public List<EmployeeResponse> getAllEmployees() throws ResourceNotFoundException {
-        List<EmployeeResponse> employeeResponseList;
-        List<Employee> employees = employeeRepository.findAll();
-        employeeResponseList = employees.stream().map(EmployeeServiceImpl::getEmployeeResponse).collect(Collectors.toList());
-        return employeeResponseList;
+        return employeeRepository.findAll().stream().map(EmployeeServiceImpl::getEmployeeResponse).collect(Collectors.toList());
     }
 
     @Override
@@ -48,10 +45,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse updateEmployeeById(int id, EmployeeRequest employeeRequest) {
         Employee employeeToUpdate = getEmployee(id);
-        validateEmployeeRequest(employeeRequest);
+        Employee supervisor = fetchSupervisor(employeeRequest.getSupervisorId());
         employeeToUpdate.setFirst_name(employeeRequest.getFirstName());
         employeeToUpdate.setLast_name(employeeRequest.getLastName());
         employeeToUpdate.setBirth_date(employeeRequest.getBirthDate());
+        employeeToUpdate.setSupervisor(supervisor);
         employeeRepository.save(employeeToUpdate);
         return getEmployeeResponse(employeeToUpdate);
     }
@@ -64,12 +62,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private static @NonNull EmployeeResponse getEmployeeResponse(Employee employee) {
+        Integer supervisor_id = (employee.getSupervisor() != null)
+                ? employee.getSupervisor().getEmployee_id()
+                : null;
+
         return new EmployeeResponse(
                 employee.getEmployee_id(),
                 employee.getFirst_name(),
                 employee.getLast_name(),
                 employee.getBirth_date(),
-                employee.getSupervisor_id()
+                supervisor_id
         );
     }
 
@@ -80,14 +82,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                 ));
     }
 
-    private void validateEmployeeRequest(EmployeeRequest employeeRequest) {
-        if(employeeRequest.getFirstName().trim().isEmpty()
-                || employeeRequest.getLastName().trim().isEmpty()
-                || employeeRequest.getBirthDate() == null) {
-            throw new IllegalArgumentException("Invalid request input.");
+    private Employee fetchSupervisor(Integer supervisor_id) {
+        if (supervisor_id == null) {
+            return null;
         }
-        if (employeeRequest.getSupervisorId() != null && employeeRepository.findById(employeeRequest.getSupervisorId()).isEmpty()) {
-            throw new ResourceNotFoundException("Supervisor with id " + employeeRequest.getSupervisorId() + " not found.");
-        }
+        return employeeRepository.findById(supervisor_id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supervisor not found with id: " + supervisor_id));
     }
 }
