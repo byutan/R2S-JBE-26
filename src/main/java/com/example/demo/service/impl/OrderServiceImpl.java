@@ -11,6 +11,7 @@ import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -53,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponse> findAllOrdersByEmployeeId(Integer employee_id) {
         if (!employeeRepository.existsById(employee_id)) {
-            throw new BusinessValidationException("Employee with id " + employee_id + " not found", Map.of("employee_id", employee_id.toString()));
+            throw new BusinessValidationException("Employee with id " + employee_id + " not found", HttpStatus.NOT_FOUND, Map.of("employee_id", employee_id.toString()));
         }
         Employee employee = employeeRepository.findById(employee_id).get();
         return employee.getOrders().stream().map(OrderServiceImpl::getOrderResponse).collect(Collectors.toList());
@@ -66,13 +67,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse findOrderById(Integer order_id) {
-        Order foundOrder = orderRepository.findById(order_id).orElseThrow(() -> new BusinessValidationException("Order with id " + order_id + " not found", Map.of("order_id", order_id.toString())));
+        Order foundOrder = orderRepository.findById(order_id).orElseThrow(() -> new BusinessValidationException("Order with id " + order_id + " not found", HttpStatus.NOT_FOUND, Map.of("order_id", order_id.toString())));
         return getOrderResponse(foundOrder);
     }
 
     @Override
     public OrderResponse updateOrderById(Integer order_id, OrderRequest orderRequest) {
-        Order orderToUpdate = orderRepository.findById(order_id).orElseThrow(() -> new BusinessValidationException("Order with id " + order_id + " not found", Map.of("order_id", order_id.toString())));
+        Order orderToUpdate = orderRepository.findById(order_id).orElseThrow(() -> new BusinessValidationException("Order with id " + order_id + " not found", HttpStatus.NOT_FOUND, Map.of("order_id", order_id.toString())));
         Integer customer_id = orderRequest.getCustomer_id();
         Integer employee_id = orderRequest.getEmployee_id();
         Date order_date = orderRequest.getOrder_date();
@@ -86,15 +87,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrderById(Integer order_id) {
-        Order orderToDelete = orderRepository.findById(order_id).orElseThrow(() -> new BusinessValidationException("Order with id " + order_id + " not found", Map.of("order_id", order_id.toString())));
+        Order orderToDelete = orderRepository.findById(order_id).orElseThrow(() -> new BusinessValidationException("Order with id " + order_id + " not found", HttpStatus.NOT_FOUND, Map.of("order_id", order_id.toString())));
         orderRepository.delete(orderToDelete);
     }
 
     private void validateCustomerAndEmployee(Integer customer_id, Integer employee_id) {
         if (!customerRepository.existsById(customer_id)) {
-            throw new BusinessValidationException("Customer with id " + customer_id + " not found", Map.of("customer_id", customer_id.toString()));
+            throw new BusinessValidationException("Customer with id " + customer_id + " not found", HttpStatus.NOT_FOUND, Map.of("customer_id", customer_id.toString()));
         } else if (!employeeRepository.existsById(employee_id)) {
-            throw new BusinessValidationException("Employee with id " + employee_id + " not found", Map.of("employee_id", employee_id.toString()));
+            throw new BusinessValidationException("Employee with id " + employee_id + " not found", HttpStatus.NOT_FOUND, Map.of("employee_id", employee_id.toString()));
         }
     }
 

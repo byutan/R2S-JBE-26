@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<APIError> handleBusinessValidationException(BusinessValidationException e, HttpServletRequest req) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIError(
                         Instant.now(),
-                        HttpStatus.BAD_REQUEST.value(),
+                        e.getCode().value(),
                         "Business Validation error",
                         e.getMessage(),
                         req.getRequestURI(),
