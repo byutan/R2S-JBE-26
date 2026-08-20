@@ -3,6 +3,8 @@ package com.example.demo.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -93,6 +95,30 @@ public class GlobalExceptionHandler {
                         e.getMessage(),
                         req.getRequestURI(),
                         e.getFieldError()
+                )
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<AuthError> handleAuthenticationException(AuthenticationException e, HttpServletRequest req) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthError(
+                        Instant.now(),
+                        HttpStatus.UNAUTHORIZED.value(),
+                        "Invalid JWT or missing token",
+                        e.getMessage(),
+                        req.getRequestURI()
+                )
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<AuthError> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest req) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AuthError(
+                        Instant.now(),
+                        HttpStatus.FORBIDDEN.value(),
+                        "Resource access denied",
+                        e.getMessage(),
+                        req.getRequestURI()
                 )
         );
     }

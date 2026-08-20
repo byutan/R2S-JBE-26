@@ -2,8 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.dto.OrderRequest;
 import com.example.demo.dto.OrderResponse;
-import com.example.demo.entity.Order;
-import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Date;
 import java.util.List;
