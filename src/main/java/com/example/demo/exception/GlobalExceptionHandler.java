@@ -98,28 +98,4 @@ public class GlobalExceptionHandler {
                 )
         );
     }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<AuthError> handleAuthenticationException(AuthenticationException e, HttpServletRequest req) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthError(
-                        Instant.now(),
-                        HttpStatus.UNAUTHORIZED.value(),
-                        "Invalid JWT or missing token",
-                        e.getMessage(),
-                        req.getRequestURI()
-                )
-        );
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<AuthError> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest req) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new AuthError(
-                        Instant.now(),
-                        HttpStatus.FORBIDDEN.value(),
-                        "Resource access denied",
-                        e.getMessage(),
-                        req.getRequestURI()
-                )
-        );
-    }
 }

@@ -9,6 +9,7 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -40,16 +41,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 //
 //        // user already authenticated pass
-//        if(SecurityContextHolder.getContext().getAuthentication() != null) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        if(SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // Set auth for user
         String username = jwtService.extractUsername(token);
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
         UsernamePasswordAuthenticationToken auth =  new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         // request with auth user
         SecurityContextHolder.getContext().setAuthentication(auth);
