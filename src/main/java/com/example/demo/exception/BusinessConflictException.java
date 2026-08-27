@@ -1,7 +1,13 @@
 package com.example.demo.exception;
+import lombok.Getter;
 
+import java.util.Map;
+
+@Getter
 public class BusinessConflictException extends RuntimeException {
-    public BusinessConflictException(String message) {
+    private Map<String, String> fieldError;
+    public BusinessConflictException(String message, Map<String, String> fieldError) {
         super(message);
+        this.fieldError = fieldError;
     }
 }

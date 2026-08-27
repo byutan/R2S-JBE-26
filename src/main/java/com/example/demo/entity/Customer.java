@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,6 +32,8 @@ public class Customer {
     @Column(name="phone_number")
     private String phoneNumber;
 
+    @OneToMany(mappedBy = "ordered_customer")
+    private List<Order> orders;
 
     public Customer(String firstName, String lastName, Date birthDate, String emailAddress, String phoneNumber) {
         this.firstName = firstName;

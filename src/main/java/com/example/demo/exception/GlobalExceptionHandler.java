@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIError(
                 Instant.now(),
                 HttpStatus.NOT_FOUND.value(),
-                "Not found",
+                "Not found error",
                 e.getMessage(),
                 req.getRequestURI(),
                 null
@@ -31,10 +32,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIError(
                 Instant.now(),
                 HttpStatus.CONFLICT.value(),
-                "Conflict",
+                "Conflict error",
                 e.getMessage(),
                 req.getRequestURI(),
-                null
+                e.getFieldError()
             )
         );
     }
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIError(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad request",
+                "Business Validation error",
                 e.getMessage(),
                 req.getRequestURI(),
                 null
@@ -54,19 +55,23 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIError> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest req) {
-        String errorMessage = e.getBindingResult().getFieldErrors().stream()
-                .map(FieldError::getDefaultMessage)
+        String errorMessages = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining("; "));
+        Map<String, String> errors = e.getBindingResult().getFieldErrors().stream()
+                .collect(Collectors.toMap(FieldError::getField, error -> String.valueOf(error.getRejectedValue())));
+        System.out.println(e.getBindingResult().getFieldErrors());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIError(
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Validation error",
-                errorMessage,
+                "Technical Validation error",
+                errorMessages,
                 req.getRequestURI(),
-                null
+                errors
             )
         );
     }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<APIError> handleBadRequest(IllegalArgumentException e, HttpServletRequest req) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIError(
@@ -77,5 +82,18 @@ public class GlobalExceptionHandler {
                 req.getRequestURI(),
                 null
         ));
+    }
+
+    @ExceptionHandler(BusinessValidationException.class)
+    public ResponseEntity<APIError> handleBusinessValidationException(BusinessValidationException e, HttpServletRequest req) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new APIError(
+                        Instant.now(),
+                        e.getCode().value(),
+                        "Business Validation error",
+                        e.getMessage(),
+                        req.getRequestURI(),
+                        e.getFieldError()
+                )
+        );
     }
 }
