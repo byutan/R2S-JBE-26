@@ -3,11 +3,13 @@ package com.example.demo.dto;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomerRequest {
     @NotBlank(message = "First name is empty.")
     private String firstName;

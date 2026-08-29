@@ -29,18 +29,21 @@ public class OrderController {
     public ResponseEntity<OrderResponse> createOrder(@RequestBody @Valid OrderRequest orderRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(orderRequest));
     }
+
     @GetMapping
 //    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PreAuthorize("hasAuthority('ORDER_VIEW')")
     public ResponseEntity<List<OrderResponse>> getAllOrder() {
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.findAllOrders());
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.findAllOrders());
     }
+
     @GetMapping("/{id}")
 //    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PreAuthorize("hasAuthority('ORDER_VIEW')")
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.findOrderById(id));
     }
+
     @GetMapping("/by-employee/{employeeId}")
 //    @PreAuthorize("hasRole('ADMIN')")
     @PreAuthorize("hasAuthority('ORDER_ADMIN_VIEW')")

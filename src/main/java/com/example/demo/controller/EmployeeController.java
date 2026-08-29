@@ -41,14 +41,14 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
 //    @PreAuthorize("hasRole('ADMIN')")
-//    @PreAuthorize("hasAuthority('EMPLOYEE_UPDATE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE_UPDATE')")
     public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable Integer id, @RequestBody @Valid EmployeeRequest employeeRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.updateEmployeeById(id, employeeRequest));
     }
 
     @DeleteMapping("/{id}")
 //    @PreAuthorize("hasRole('ADMIN')")
-//    @PreAuthorize("hasAuthority('EMPLOYEE_DELETE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE_DELETE')")
     public ResponseEntity<?> deleteEmployee(@PathVariable Integer id) {
         employeeService.deleteEmployeeById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
